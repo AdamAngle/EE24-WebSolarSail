@@ -1,0 +1,16 @@
+{
+	"id": "cometleonard", 
+	"category": "comets",
+	"name": "Comet Leonard (C/2021 A1)", 
+	"elements": {
+		"name": "Comet Leonard (C/2021 A1)",
+		"p":0.61517437494866,
+		"e":1.000088610448,
+		"i":132.68619850083,
+		"o":255.88445925757,
+		"ap":225.08783526165,
+		"tpjd":2459582.7933961,
+		"ma":0,
+		"mag":0				
+	}
+}

@@ -1,0 +1,35 @@
+<div class="container"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r125/three.min.js" integrity="sha512-XI02ivhfmEfnk8CEEnJ92ZS6hOqWoWMKF6pxF/tC/DXBVxDXgs2Kmlc9CHA0Aw2dX03nrr8vF54Z6Mqlkuabkw==" crossorigin="anonymous"></script>
+
+<script type="module">
+    import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+let controls = new OrbitControls( camera, renderer.domElement );
+const geometry = new THREE.BoxGeometry();
+const material = new THREE.MeshBasicMaterial({
+  color: 0x00ff00
+});
+
+const cube = new THREE.Mesh(geometry, material);
+scene.add(cube)
+camera.position.z = 5;
+const distance = 5;
+controls.update();
+
+function animate() {
+  requestAnimationFrame(animate);
+  cube.rotation.x +=0.01;
+  renderer.render(scene, camera);
+   controls.update();
+
+}
+
+
+animate();
+
+</script>

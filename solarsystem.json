@@ -1,0 +1,95 @@
+{
+    "oort_cloud": {
+        "diameter": 18921460945160,
+        "radius": 9460730472580
+    },
+    "kuiperBelt": {
+        "diameter": 14959787070,
+        "radius": 7479893535
+    },
+    "parent": {
+        "id": "Sun",
+        "name": "Sun",
+        "texture": "/assets/textures/sun.jpg",
+        "diameter": 1391016,
+        "radius": 695508,
+        "unit": "KM",
+        "mass": 1988500,
+        "gravity": 274,
+        "density": 1408,
+        "rotationPeriod": 609.12,
+        "distanceFromParent": null,
+        "orbitalPeriod": null,
+        "orbitalVelocity": null,
+        "orbitalInclination": null,
+        "axialTilt": null,
+        "meanTemperature": "5778 K",
+        "solarConstant": 1.365
+    },
+    "bodies": [
+        {
+            "id": "Earth",
+            "name": "Earth",
+            "texture": "/assets/textures/earth.jpg",
+            "diameter": 12756,
+            "radius": 637800,
+            "unit": "KM"
+        },
+        {
+            "id": "Moon",
+            "name": "Moon",
+            "texture": "/assets/textures/moon.jpg",
+            "diameter": 384399,
+            "radius": 173700,
+            "unit": "KM"
+        },
+        {
+            "id": "Mars",
+            "name": "Mars",
+            "texture": "/assets/textures/mars.jpg",
+            "diameter": 6779,
+            "radius": 339500,
+            "unit": "KM"
+        },
+        {
+            "id": "Jupiter",
+            "name": "Jupiter",
+            "texture": "/assets/textures/jupiter.jpg",
+            "diameter": 142984,
+            "radius": 69911,
+            "unit": "KM"
+        },
+        {
+            "id": "Saturn",
+            "name": "Saturn",
+            "texture": "/assets/textures/saturn.jpg",
+            "diameter": 120536,
+            "radius": 58232,
+            "unit": "KM"
+        },
+        {
+            "id": "Uranus",
+            "name": "Uranus",
+            "texture": "/assets/textures/uranus.jpg",
+            "diameter": 51118,
+            "radius": 25362,
+            "unit": "KM"
+        },
+        {
+            "id": "Neptune",
+            "name": "Neptune",
+            "texture": "/assets/textures/neptune.jpg",
+            "diameter": 49528,
+            "radius": 24622,
+            "unit": "KM"
+        },
+        {
+            "id": "Pluto",
+            "name": "Pluto",
+            "texture": "/assets/textures/pluto.jpg",
+            "diameter": 2370,
+            "radius": 1188,
+            "unit": "KM"
+        }
+    ]
+}
