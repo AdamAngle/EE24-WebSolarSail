@@ -25,6 +25,8 @@ export function SceneManager(canvas, onLoadComplete=null)
   const scene = buildScene();
   const renderer = buildRender(screenDimensions);
   const camera = buildCamera(screenDimensions);
+  const navbar = document.getElementById("navbar-main");
+
   var controls;
   this.currentTime = new Date();
   buildControls(camera, renderer);
@@ -131,11 +133,11 @@ export function SceneManager(canvas, onLoadComplete=null)
     const { width, height } = canvas;
 
     screenDimensions.width = width;
-    screenDimensions.height = height;
+    screenDimensions.height = height - navbar.offsetHeight;
 
-    camera.aspect = width / height;
+    camera.aspect = width / (height - navbar.offsetHeight);
     camera.updateProjectionMatrix();
     
-    renderer.setSize(width, height);
+    renderer.setSize(width, height - navbar.offsetHeight);
   }
 }

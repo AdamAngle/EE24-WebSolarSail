@@ -93,12 +93,16 @@
 }
 
 .spanner, .overlay{
-    opacity: 0;
-    -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
-    transition: all 0.3s;
+  opacity: 0;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
 }
 
 .spanner.show, .overlay.show {
-    opacity: 1
+  opacity: 1
+}
+
+.bg-transparent {
+  background-color: transparent !important;
 }
