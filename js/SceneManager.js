@@ -3,6 +3,7 @@ import * as THREE from "https://cdn.skypack.dev/three@0.132.2";
 import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
 import {GeneralLights} from "./sceneSubjects/GeneralLights.js";
 import {SceneSubject, GridSubject} from "./sceneSubjects/SceneSubject.js";
+import {SkyboxSubject} from "./sceneSubjects/SkyboxSubject.js";
 import {SunBody, PlanetBody} from "./sceneSubjects/SystemBodies.js";
 
 const addDays = function(d, days) {
@@ -74,7 +75,8 @@ export function SceneManager(canvas, onLoadComplete=null)
     const sceneSubjects = [
       new GeneralLights(scene),
       // new SceneSubject(scene),
-      new GridSubject(scene)
+      new SkyboxSubject(scene)
+      //new GridSubject(scene)
     ];
 
     return sceneSubjects;
