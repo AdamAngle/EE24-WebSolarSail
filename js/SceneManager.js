@@ -83,14 +83,14 @@ export function SceneManager(canvas, onLoadComplete=null)
   function createSystemSubjects(scene, data) {
     // Parent object is always the sun.
     console.log("creating system subjects")
-    const sun = new StarBody(scene, data.parent);
+    const sun = new StarBody(scene, renderer, data.parent);
 
     var planetaryObjects = [
       sun
     ];
 
     for (const body of data.bodies) {
-      const orbitBody = new StarBody(scene, body);
+      const orbitBody = new StarBody(scene, renderer, body);
       planetaryObjects.push(orbitBody);
     }
 

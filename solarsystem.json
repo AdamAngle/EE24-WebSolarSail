@@ -33,7 +33,10 @@
             "texture": "/assets/textures/earth.jpg",
             "diameter": 12756,
             "radius": 637800,
-            "unit": "KM"
+            "unit": "KM",
+            "horizons": {
+
+            }
         },
         {
             "id": "Moon",
@@ -41,7 +44,10 @@
             "texture": "/assets/textures/moon.jpg",
             "diameter": 384399,
             "radius": 173700,
-            "unit": "KM"
+            "unit": "KM",
+            "horizons": {
+                
+            }
         },
         {
             "id": "Mars",
@@ -49,7 +55,10 @@
             "texture": "/assets/textures/mars.jpg",
             "diameter": 6779,
             "radius": 339500,
-            "unit": "KM"
+            "unit": "KM",
+            "horizons": {
+
+            }
         },
         {
             "id": "Jupiter",
@@ -57,7 +66,10 @@
             "texture": "/assets/textures/jupiter.jpg",
             "diameter": 142984,
             "radius": 69911,
-            "unit": "KM"
+            "unit": "KM",
+            "horizons": {
+
+            }
         },
         {
             "id": "Saturn",
@@ -65,7 +77,10 @@
             "texture": "/assets/textures/saturn.jpg",
             "diameter": 120536,
             "radius": 58232,
-            "unit": "KM"
+            "unit": "KM",
+            "horizons": {
+
+            }
         },
         {
             "id": "Uranus",
@@ -73,7 +88,10 @@
             "texture": "/assets/textures/uranus.jpg",
             "diameter": 51118,
             "radius": 25362,
-            "unit": "KM"
+            "unit": "KM",
+            "horizons": {
+
+            }
         },
         {
             "id": "Neptune",
@@ -81,7 +99,10 @@
             "texture": "/assets/textures/neptune.jpg",
             "diameter": 49528,
             "radius": 24622,
-            "unit": "KM"
+            "unit": "KM",
+            "horizons": {
+
+            }
         },
         {
             "id": "Pluto",
@@ -89,7 +110,21 @@
             "texture": "/assets/textures/pluto.jpg",
             "diameter": 2370,
             "radius": 1188,
-            "unit": "KM"
+            "unit": "KM",
+            "horizons": {
+
+            }
+        },
+        {
+            "id": "Mercury",
+            "name": "Mercury",
+            "texture": "/assets/textures/mercury.jpg",
+            "diameter": 4879.4,
+            "radius": 2439.7,
+            "unit": "KM",
+            "horizons": {
+
+            }
         }
     ]
 }
