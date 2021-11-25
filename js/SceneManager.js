@@ -3,7 +3,7 @@ import * as THREE from "https://cdn.skypack.dev/three@0.132.2";
 import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
 import {GeneralLights} from "./sceneSubjects/GeneralLights.js";
 import {SceneSubject, GridSubject} from "./sceneSubjects/SceneSubject.js";
-import {StarBody, BodyBody} from "./sceneSubjects/SystemBodies.js";
+import {SunBody, PlanetBody} from "./sceneSubjects/SystemBodies.js";
 
 const addDays = function(d, days) {
   var date = new Date(d.valueOf());
@@ -83,14 +83,14 @@ export function SceneManager(canvas, onLoadComplete=null)
   function createSystemSubjects(scene, data) {
     // Parent object is always the sun.
     console.log("creating system subjects")
-    const sun = new StarBody(scene, renderer, data.parent);
+    const sun = new SunBody(scene, renderer, data.parent);
 
     var planetaryObjects = [
       sun
     ];
 
     for (const body of data.bodies) {
-      const orbitBody = new StarBody(scene, renderer, body);
+      const orbitBody = new PlanetBody(scene, renderer, body);
       planetaryObjects.push(orbitBody);
     }
 
@@ -115,7 +115,9 @@ export function SceneManager(canvas, onLoadComplete=null)
       sceneSubjects[i].update(elapsedTime);
 
     this.currentTime = addDays(this.currentTime, 1);
+    document.getElementById("ss-debug").innerHTML = this.currentTime.toString();
     //var days = (this.utcTimeMillis - (new Date(2000,0,1)).getTime()) / 3600 / 24 / 1000;
+    
     for(let i=0; i<systemSubjects.length; i++)
       systemSubjects[i].update(this.currentTime);
     

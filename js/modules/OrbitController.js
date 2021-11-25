@@ -1,3 +1,4 @@
+import { CalculationHandler  } from "/js/modules/CalculationHandler.js";
 //const SCALE_FACTOR = 10^14;
 
 export class PlanetOrbitController {
@@ -34,7 +35,7 @@ export class OrbitController {
 
     calculatePosition = function(dateTime) {
         if (this._isBuiltIn) {
-            return Astronomy.HelioVector(this.body.params.id, dateTime)
+            return Astronomy.HelioVector(this._body.params.id, dateTime)
         } else {
             // Get current heliocentric XYZ coordinates
             CalculationHandler.updateMeanElements(dateTime, this._body);
