@@ -1,44 +1,53 @@
+import { CalculationHandler  } from "/js/modules/CalculationHandler.js";
 //const SCALE_FACTOR = 10^14;
 
-// class ScaledVector {
-//     constructor(x, y, z, t) {
-//         this.x = x * SCALE_FACTOR;
-//         this.y = y * SCALE_FACTOR;
-//         this.z = z * SCALE_FACTOR;
-//         this.t = t;
-//     }
-// }
-
-export class OrbitController {
-    constructor(params) {
-        this._params = params;
-        this._isBuiltIn = this._params.id in Astronomy.Body;
+export class PlanetOrbitController {
+    constructor(body) {
+        this._body = body;
+        this._isBuiltIn = this._body.params.id in Astronomy.Body;
     }
 
-    // scaleAstroVector = function(vector) {
-    //     return new ScaledVector(
-    //         vector.x * SCALE_FACTOR,
-    //         vector.y * SCALE_FACTOR,
-    //         vector.z * SCALE_FACTOR,
-    //         vector.t
-    //     );
-    // }
-
     calculatePosition = function(dateTime) {
-        if (this._isBuiltIn) {
-            return Astronomy.HelioVector(this._params.id, dateTime)
+        if (false && this._isBuiltIn) {
+            return Astronomy.HelioVector(this.body.params.id, dateTime)
         } else {
-            return this._params.position(day);
+            // Get current heliocentric XYZ coordinates
+            CalculationHandler.updateMeanElements(dateTime, this._body);
+            return CalculationHandler.getHelioXYZR(this._body);
+            //return this.body.params.position(day);
         }
     };
 
-    
+    calculateAuRadius = function() {
+        if (this._body.params.unit === "KM") {
+            return (this._body.params.radius ? this._body.params.radius : 1) / Astronomy.KM_PER_AU;
+        } else {
+            return this._body.params.radius ? this._body.params.radius : 1;
+        }
+    };
+}
+
+export class OrbitController {
+    constructor(body) {
+        this._body = body;
+        this._isBuiltIn = this._body.params.id in Astronomy.Body;
+    }
+
+    calculatePosition = function(dateTime) {
+        if (this._isBuiltIn) {
+            return Astronomy.HelioVector(this._body.params.id, dateTime)
+        } else {
+            // Get current heliocentric XYZ coordinates
+            CalculationHandler.updateMeanElements(dateTime, this._body);
+            //return this.body.params.position(day);
+        }
+    };
 
     calculateAuRadius = function() {
-        if (this._params.unit === "KM") {
-            return (this._params.radius ? this._params.radius : 1) / Astronomy.KM_PER_AU;
+        if (this._body.params.unit === "KM") {
+            return (this._body.params.radius ? this._body.params.radius : 1) / Astronomy.KM_PER_AU;
         } else {
-            return this._params.radius ? this._params.radius : 1;
+            return this._body.params.radius ? this._body.params.radius : 1;
         }
     };
 }

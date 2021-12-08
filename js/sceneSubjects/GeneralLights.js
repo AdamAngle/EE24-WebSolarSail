@@ -2,7 +2,7 @@ import * as THREE from "https://cdn.skypack.dev/three@0.132.2";
 
 export function GeneralLights(scene) {
 	
-	const light = new THREE.PointLight("#2222ff", 1);
+	const light = new THREE.PointLight(0xffffff,1.5,2000);
 	light.position.set(0, 20, 0);
     scene.add(light);
 	

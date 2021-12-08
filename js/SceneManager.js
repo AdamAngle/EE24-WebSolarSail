@@ -3,7 +3,10 @@ import * as THREE from "https://cdn.skypack.dev/three@0.132.2";
 import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
 import {GeneralLights} from "./sceneSubjects/GeneralLights.js";
 import {SceneSubject, GridSubject} from "./sceneSubjects/SceneSubject.js";
-import {StarBody, BodyBody} from "./sceneSubjects/SystemBodies.js";
+import {SolarSailSubject} from "./sceneSubjects/SolarSailSubject.js";
+import {SkyboxSubject} from "./sceneSubjects/SkyboxSubject.js";
+import {SunBody, PlanetBody} from "./sceneSubjects/SystemBodies.js";
+import { CalculationHandler } from "./modules/CalculationHandler.js";
 
 const addDays = function(d, days) {
   var date = new Date(d.valueOf());
@@ -24,10 +27,22 @@ export function SceneManager(canvas, onLoadComplete=null)
   const scene = buildScene();
   const renderer = buildRender(screenDimensions);
   const camera = buildCamera(screenDimensions);
+  const navbar = document.getElementById("navbar-main");
+
   var controls;
   this.currentTime = new Date();
   buildControls(camera, renderer);
-  const sceneSubjects = createSceneSubjects(scene);
+
+  const solarSailParams = {
+    radialSegments: 8,
+    sailRadius: CalculationHandler.mToAU(5),
+    height: CalculationHandler.mToAU(5),
+    rotationIncrement: 0.01,
+    initialConeAngle: -1 // != 0
+  }
+  this.solarSail = new SolarSailSubject(scene, renderer, solarSailParams);
+
+  const sceneSubjects = createSceneSubjects(scene, this.solarSail);
   var systemSubjects = [];
 
   $.ajax({
@@ -70,11 +85,13 @@ export function SceneManager(canvas, onLoadComplete=null)
     return camera;
   }
 
-  function createSceneSubjects(scene) {
+  function createSceneSubjects(scene, solarSail) {
     const sceneSubjects = [
       new GeneralLights(scene),
       // new SceneSubject(scene),
-      new GridSubject(scene)
+      new SkyboxSubject(scene),
+      solarSail
+      //new GridSubject(scene)
     ];
 
     return sceneSubjects;
@@ -83,14 +100,14 @@ export function SceneManager(canvas, onLoadComplete=null)
   function createSystemSubjects(scene, data) {
     // Parent object is always the sun.
     console.log("creating system subjects")
-    const sun = new StarBody(scene, data.parent);
+    const sun = new SunBody(scene, renderer, data.parent);
 
     var planetaryObjects = [
       sun
     ];
 
     for (const body of data.bodies) {
-      const orbitBody = new StarBody(scene, body);
+      const orbitBody = new PlanetBody(scene, renderer, body);
       planetaryObjects.push(orbitBody);
     }
 
@@ -115,7 +132,9 @@ export function SceneManager(canvas, onLoadComplete=null)
       sceneSubjects[i].update(elapsedTime);
 
     this.currentTime = addDays(this.currentTime, 1);
+    document.getElementById("ss-debug").innerHTML = this.currentTime.toString();
     //var days = (this.utcTimeMillis - (new Date(2000,0,1)).getTime()) / 3600 / 24 / 1000;
+    
     for(let i=0; i<systemSubjects.length; i++)
       systemSubjects[i].update(this.currentTime);
     
@@ -127,11 +146,11 @@ export function SceneManager(canvas, onLoadComplete=null)
     const { width, height } = canvas;
 
     screenDimensions.width = width;
-    screenDimensions.height = height;
+    screenDimensions.height = height - navbar.offsetHeight;
 
-    camera.aspect = width / height;
+    camera.aspect = width / (height - navbar.offsetHeight);
     camera.updateProjectionMatrix();
     
-    renderer.setSize(width, height);
+    renderer.setSize(width, height - navbar.offsetHeight);
   }
 }
