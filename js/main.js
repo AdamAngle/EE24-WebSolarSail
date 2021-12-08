@@ -1,4 +1,4 @@
-import {SceneManager} from './sceneManager.js';
+import {SceneManager} from './SceneManager.js';
 
 const canvas = document.getElementById('ss-canvas');
 const loader = document.getElementById('overlay');
