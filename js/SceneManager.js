@@ -3,8 +3,10 @@ import * as THREE from "https://cdn.skypack.dev/three@0.132.2";
 import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
 import {GeneralLights} from "./sceneSubjects/GeneralLights.js";
 import {SceneSubject, GridSubject} from "./sceneSubjects/SceneSubject.js";
+import {SolarSailSubject} from "./sceneSubjects/SolarSailSubject.js";
 import {SkyboxSubject} from "./sceneSubjects/SkyboxSubject.js";
 import {SunBody, PlanetBody} from "./sceneSubjects/SystemBodies.js";
+import { CalculationHandler } from "./modules/CalculationHandler.js";
 
 const addDays = function(d, days) {
   var date = new Date(d.valueOf());
@@ -30,7 +32,17 @@ export function SceneManager(canvas, onLoadComplete=null)
   var controls;
   this.currentTime = new Date();
   buildControls(camera, renderer);
-  const sceneSubjects = createSceneSubjects(scene);
+
+  const solarSailParams = {
+    radialSegments: 8,
+    sailRadius: CalculationHandler.mToAU(5),
+    height: CalculationHandler.mToAU(5),
+    rotationIncrement: 0.01,
+    initialConeAngle: -1 // != 0
+  }
+  this.solarSail = new SolarSailSubject(scene, renderer, solarSailParams);
+
+  const sceneSubjects = createSceneSubjects(scene, this.solarSail);
   var systemSubjects = [];
 
   $.ajax({
@@ -73,11 +85,12 @@ export function SceneManager(canvas, onLoadComplete=null)
     return camera;
   }
 
-  function createSceneSubjects(scene) {
+  function createSceneSubjects(scene, solarSail) {
     const sceneSubjects = [
       new GeneralLights(scene),
       // new SceneSubject(scene),
-      new SkyboxSubject(scene)
+      new SkyboxSubject(scene),
+      solarSail
       //new GridSubject(scene)
     ];
 
