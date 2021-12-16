@@ -23,7 +23,6 @@ export class OrbitSubject {
     constructor(body) {
         this._body = body;
         CalculationHandler.updateMeanElements((new Date()).getTime(), this._body);
-        console.log(this._body.params.horizons.A)
         this.geometry = this.buildEllipticalGeometry(this._body.params.horizons.A, this._body.params.horizons.E);
         this.lsObject = new THREE.LineSegments(this.geometry, new THREE.LineBasicMaterial({
             color: "#f1f1f1",
@@ -78,5 +77,39 @@ export class OrbitSubject {
         geometry.applyMatrix4(m2);
         geometry.rotateOnAxis(new THREE.Vector3(1,0,0), (horizons.I));
         geometry.rotateOnAxis(new THREE.Vector3(0,1,0), (horizons.LP - horizons.O));
+    }
+}
+
+export class SolarSailOrbitSubject {
+    // Default number of orbit ring line segments (more = smoother orbit line)
+
+    constructor(body) {
+        this._body = body;
+        this.geometry = new THREE.BufferGeometry();
+        this.lsObject = new THREE.LineSegments(this.geometry, new THREE.LineBasicMaterial({
+            color: "#ff0000",
+            opacity: 1,
+            linewidth: 1,
+            fog: true
+        }));
+        this.verts = [];
+    }
+
+    addToScene(scene) {
+        scene.add(this.lsObject);
+    }
+
+    setVertices(vertices) {
+        this.verts = [];
+        for (var i = 0; i < vertices.length; i++) {
+            this.verts.push(
+                new THREE.Vector3(
+                    CalculationHandler.kmToAU(vertices[i][0]),
+                    CalculationHandler.kmToAU(vertices[i][2]),
+                    CalculationHandler.kmToAU(vertices[i][1])
+                )
+            );
+        }
+        this.geometry.setFromPoints(this.verts);
     }
 }

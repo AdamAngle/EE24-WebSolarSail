@@ -38,12 +38,15 @@ export function SceneManager(canvas, onLoadComplete=null)
     sailRadius: CalculationHandler.mToAU(5),
     height: CalculationHandler.mToAU(5),
     rotationIncrement: 0.01,
-    initialConeAngle: -1 // != 0
+    initialConeAngle: 1 // != 0
   }
-  this.solarSail = new SolarSailSubject(scene, renderer, solarSailParams);
 
-  const sceneSubjects = createSceneSubjects(scene, this.solarSail);
+  const sceneSubjects = createSceneSubjects(scene);
   var systemSubjects = [];
+
+  this.solarSail = new SolarSailSubject(scene, renderer, solarSailParams);
+  this.cameraLocked = true;
+  this.detailedDebug = false;
 
   $.ajax({
     url: "/solarsystem.json",
@@ -79,19 +82,18 @@ export function SceneManager(canvas, onLoadComplete=null)
     const aspectRatio = width / height;
     const fieldOfView = 60;
     const nearPlane = 0.0000000001;
-    const farPlane = 5 * Math.pow(10, 13);
+    const farPlane = 5 * Math.pow(5, 13);
     const camera = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
     camera.position.set(0, 0, 5);
     return camera;
   }
 
-  function createSceneSubjects(scene, solarSail) {
+  function createSceneSubjects(scene) {
     const sceneSubjects = [
-      new GeneralLights(scene),
+      //new GeneralLights(scene),
       // new SceneSubject(scene),
       new SkyboxSubject(scene),
-      solarSail
-      //new GridSubject(scene)
+      new GridSubject(scene)
     ];
 
     return sceneSubjects;
@@ -125,18 +127,37 @@ export function SceneManager(canvas, onLoadComplete=null)
     // this.controls = buildControls(camera, renderer);
   }
 
-  this.update = function() {
-    const elapsedTime = clock.getElapsedTime();
-
-    for(let i=0; i<sceneSubjects.length; i++)
-      sceneSubjects[i].update(elapsedTime);
-
-    this.currentTime = addDays(this.currentTime, 1);
+  this.updateDebug = function() {
     document.getElementById("ss-debug").innerHTML = this.currentTime.toString();
+    var text = `CAMERA MODE: Perspective (${this.cameraLocked ? 'FIXED' : 'FREE'})\n`;
+    text += `SAIL POS (AU): (${this.solarSail.cone.position.x}, ${this.solarSail.cone.position.y}, ${this.solarSail.cone.position.z})\n`;
+    text += `SAIL ROT (deg): (${this.solarSail.cone.rotation.x * 180 / Math.PI}, ${this.solarSail.cone.rotation.y * 180 / Math.PI}, ${this.solarSail.cone.rotation.z * 180 / Math.PI})\n`;
+    if (this.detailedDebug) {
+      text += `---- LAST 5 ODE VALUES (SOLAR SAIL): ----\n`;
+      for (var i = 0; i < 5; i++) {
+        text += `${i}: ${this.solarSail.orbitSubject.verts[i][0]} ${this.solarSail.orbitSubject.verts[i][2]} ${this.solarSail.orbitSubject.verts[i][1]}\n`;
+      }
+      this.solarSail.orbitSubject.vertices
+    }
+    document.getElementById("ss-debug-btm").innerHTML = text;
+  }
+
+  this.update = function() {
+    this.currentTime = addDays(this.currentTime, 1);
+
+    this.updateDebug();
     //var days = (this.utcTimeMillis - (new Date(2000,0,1)).getTime()) / 3600 / 24 / 1000;
-    
+    this.solarSail.update(this.currentTime);
     for(let i=0; i<systemSubjects.length; i++)
       systemSubjects[i].update(this.currentTime);
+
+    for(let i=0; i<sceneSubjects.length; i++)
+      sceneSubjects[i].update(this.currentTime);
+
+    if(this.cameraLocked) {
+      const conePos = this.solarSail.cone.position;
+      controls.target.set(conePos.x, conePos.y, conePos.z);
+    }
     
     controls.update();
     renderer.render(scene, camera);
@@ -152,5 +173,18 @@ export function SceneManager(canvas, onLoadComplete=null)
     camera.updateProjectionMatrix();
     
     renderer.setSize(width, height - navbar.offsetHeight);
+  }
+
+  this.onKeyUp = function(event) {
+    switch(event.key) {
+      case "l":
+        this.cameraLocked = !this.cameraLocked;
+        break;
+      case "p":
+        this.detailedDebug = !this.detailedDebug;
+        break;
+      default:
+        break;
+    }
   }
 }

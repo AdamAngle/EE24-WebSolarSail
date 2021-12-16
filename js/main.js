@@ -24,6 +24,7 @@ function render() {
 
 function bindEventListeners() {
 	window.onresize = resizeCanvas;
+	window.addEventListener('keyup', onKeyUp);
 	resizeCanvas();	
 }
 
@@ -34,5 +35,9 @@ function resizeCanvas() {
 	canvas.width  = canvas.offsetWidth;
 	canvas.height = canvas.offsetHeight;
     
-  sceneManager.onWindowResize();
+  	sceneManager.onWindowResize();
+}
+
+function onKeyUp(e) {
+	sceneManager.onKeyUp(e);
 }
