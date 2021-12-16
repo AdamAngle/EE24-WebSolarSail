@@ -37,7 +37,7 @@ export function SceneManager(canvas, onLoadComplete=null)
     radialSegments: 8,
     sailRadius: CalculationHandler.mToAU(5),
     height: CalculationHandler.mToAU(5),
-    rotationIncrement: 0.01,
+    coneAngleIncrement: 0.05,
     initialConeAngle: 1 // != 0
   }
 
@@ -132,10 +132,11 @@ export function SceneManager(canvas, onLoadComplete=null)
     var text = `CAMERA MODE: Perspective (${this.cameraLocked ? 'FIXED' : 'FREE'})\n`;
     text += `SAIL POS (AU): (${this.solarSail.cone.position.x}, ${this.solarSail.cone.position.y}, ${this.solarSail.cone.position.z})\n`;
     text += `SAIL ROT (deg): (${this.solarSail.cone.rotation.x * 180 / Math.PI}, ${this.solarSail.cone.rotation.y * 180 / Math.PI}, ${this.solarSail.cone.rotation.z * 180 / Math.PI})\n`;
+    text += `CONE ANG: ${this.solarSail.coneAngle}\n`;
     if (this.detailedDebug) {
       text += `---- LAST 5 ODE VALUES (SOLAR SAIL): ----\n`;
       for (var i = 0; i < 5; i++) {
-        text += `${i}: ${this.solarSail.orbitSubject.verts[i][0]} ${this.solarSail.orbitSubject.verts[i][2]} ${this.solarSail.orbitSubject.verts[i][1]}\n`;
+        text += `${i}: ${this.solarSail.orbitSubject.verts[i].x} ${this.solarSail.orbitSubject.verts[i].y} ${this.solarSail.orbitSubject.verts[i].z}\n`;
       }
       this.solarSail.orbitSubject.vertices
     }
@@ -180,8 +181,14 @@ export function SceneManager(canvas, onLoadComplete=null)
       case "l":
         this.cameraLocked = !this.cameraLocked;
         break;
-      case "p":
+      case "k":
         this.detailedDebug = !this.detailedDebug;
+        break;
+      case "a":
+        this.solarSail.decreaseConeAngle();
+        break;
+      case "d":
+        this.solarSail.increaseConeAngle();
         break;
       default:
         break;

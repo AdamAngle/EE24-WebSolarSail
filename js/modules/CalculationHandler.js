@@ -83,11 +83,11 @@ export class OdeIntegrationHandler {
 
         // Define everything beforehand
         this.sim.evaluate("G = 6.67408e-11 m^3 kg^-1 s^-2")  // Gravitational constant
-        this.sim.evaluate("mbody = 5.9724e24 kg")            // Mass of Earth
+        this.sim.evaluate("mbody = 5.9724e24 kg")            // Mass of Sum
         this.sim.evaluate("mu = G * mbody")                  // Standard gravitational parameter
         this.sim.evaluate("AUkm = 1.496e11 / 1e3")           // Astronomical unit
         this.sim.evaluate("beta = 0.15")                     // Drag coefficient
-        this.sim.evaluate("r0 = 6378.137e3 m")               // Radius of Earth
+        this.sim.evaluate("r0 = 6378.137e3 m")               // Radius of Sun
 
         // Define functions
         function ndsolve(f, x0, dt, tmax, args=[]) {
